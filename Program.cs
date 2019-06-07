@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace student_exercises
 {
@@ -14,7 +15,7 @@ namespace student_exercises
 
            Exercise cats = new Exercise();
            cats.Name = "cats";
-           cats.Language = "meow";
+           cats.Language = "JavaScript";
 
            Exercise fish = new Exercise();
            fish.Name = "fish";
@@ -22,7 +23,7 @@ namespace student_exercises
 
            Exercise hamster = new Exercise();
            hamster.Name = "hamster";
-           hamster.Language = "meep";
+           hamster.Language = "JavaScript";
 
             ///////////////////////Cohorts, list student and instructor
            Cohort C29 = new Cohort();
@@ -41,11 +42,15 @@ namespace student_exercises
            Bill.SlackHandle = "BillBob";
            Bill.Cohort = C31;
 
+           C31.Students.Add(Bill);
+
            Student Steve = new Student();
            Steve.FirstName = "Steve";
            Steve.LastName = "Stevie";
            Steve.SlackHandle = "SteveStevie";
            Steve.Cohort = C29;
+
+           C29.Students.Add(Steve);
 
            Student Bo = new Student();
            Bo.FirstName = "Bo";
@@ -53,11 +58,23 @@ namespace student_exercises
            Bo.SlackHandle = "BoBody";
            Bo.Cohort = C30;
 
+           C30.Students.Add(Bo);
+
            Student Blue = new Student();
            Blue.FirstName = "Blue";
            Blue.LastName = "Yellow";
            Blue.SlackHandle = "BlueYellow";
            Blue.Cohort = C31;
+
+           C31.Students.Add(Blue);
+
+           Student NoExercise = new Student();
+           Blue.FirstName = "blah";
+           Blue.LastName = "blah";
+           Blue.SlackHandle = "blah";
+           Blue.Cohort = C31;
+
+           C31.Students.Add(NoExercise);
 
            ///////////Instructors
            Instructor JDog = new Instructor () ;
@@ -103,22 +120,60 @@ namespace student_exercises
            ATown.Assign(Steve, dogs, cats);
            ATown.Assign(Bo, dogs, cats);
            ATown.Assign(Blue, fish, cats);
+           ATown.Assign(Blue, fish, hamster);
 
             ///////////////Lists
-            List <Student> students = new List<Student> () {
-                Bill, Steve, Bo, Blue
+            List <Student> studentList = new List<Student> () {
+                Bill, Steve, Bo, Blue, NoExercise
             };
 
             List <Exercise> exerciseList = new List<Exercise> () {
                 dogs, cats, fish, hamster
             };
 
-            foreach(Student stu in students) {
-                Console.WriteLine($"{stu.FirstName} has to do these exercises: ");
-                foreach(Exercise con in stu.Exercises){
-                    Console.WriteLine(con.Name);
-                }
+            List <Cohort> cohortList = new List<Cohort> () {
+                C29, C30, C31
+            };
+
+            List <Instructor> instructorList = new List<Instructor> () {
+                JDog, KMoney, SteveNation, ATown
+            };
+
+            ////////Part 1
+            List <Exercise> JavaScriptExercise = exerciseList.Where(n => n.Language == "JavaScript").ToList();
+
+            ////////////Part 2 
+            List <Student> StudendsInC31 = studentList.Where(n => n.Cohort == C31).ToList();
+
+            ///////////////Part 3
+            List <Instructor> InstructorInC31 = instructorList.Where(n => n.Cohort == C31).ToList();
+
+            //////////////////Part 4
+            List <Student> SortStudentLastName = studentList.OrderBy(n => n.LastName).ToList();
+
+            ///////////////////Part 5
+            List <Student> StudentWithNoExercise = studentList.Where(n => n.Exercises == null).ToList();
+
+            /////////////////////Part 6
+            Student MostExercises = studentList.OrderBy(n => n.Exercises.Count).ToList()[0];
+
+            ///////////////////////Part 7
+            foreach(Cohort n in cohortList){
+                Console.WriteLine(n.Students.Count());
             }
+
+
+
+
+
+
+
+            // foreach(Student stu in students) {
+            //     Console.WriteLine($"{stu.FirstName} has to do these exercises: ");
+            //     foreach(Exercise con in stu.Exercises){
+            //         Console.WriteLine(con.Name);
+            //     }
+            // }
             
 
         }
